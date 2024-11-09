@@ -1,15 +1,5 @@
-import { cart, addToCart } from '../data/cart.js'
+import { addToCart, calculateCartQuantity } from '../data/cart.js'
 import { products } from '../data/products.js'
-
-function updateCartQuantity() {
-  let cartQuantity = 0
-
-  cart.forEach(cartItem => {
-    cartQuantity += cartItem.quantity
-  })
-
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
-}
 
 let productsHTML = ''
 
@@ -25,16 +15,13 @@ products.forEach(product => {
         </div>
 
         <div class="product-rating-container">
-          <img class="product-rating-stars"
-           src="${product.getStarsUrl()}">
+          <img class="product-rating-stars" src="${product.getStarsUrl()}">
           <div class="product-rating-count link-primary">
             ${product.rating.count}
           </div>
         </div>
 
-        <div class="product-price">
-          ${product.getPrice()}
-        </div>
+        <div class="product-price">${product.getPrice()}</div>
 
         <div class="product-quantity-container">
           <select class="js-quantity-selector-${product.id}">
@@ -65,6 +52,14 @@ products.forEach(product => {
 })
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+function updateCartQuantity() {
+  const cartQuantity = calculateCartQuantity()
+
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
+}
+
+updateCartQuantity()
 
 const timeouts = {}
 
